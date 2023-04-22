@@ -2,23 +2,26 @@ package devandroid.paulo.applistacurso.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import devandroid.paulo.applistacurso.R;
+import devandroid.paulo.applistacurso.controller.CursoController;
 import devandroid.paulo.applistacurso.controller.PessoaController;
 import devandroid.paulo.applistacurso.model.Pessoa;
 
 public class MainActivity extends AppCompatActivity {
     Pessoa pessoa;
+    List<String> nomesDosCursos;
 
+    CursoController cursoController;
     PessoaController controller;
 
     EditText editPrimeiroNome;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     Button button2;
     Button button3;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,20 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
+
+        cursoController = new CursoController();
+        nomesDosCursos = cursoController.dadosParaSpinner();
+        spinner = findViewById(R.id.spinner);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                cursoController.dadosParaSpinner()
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+
+        spinner.setAdapter(adapter);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
