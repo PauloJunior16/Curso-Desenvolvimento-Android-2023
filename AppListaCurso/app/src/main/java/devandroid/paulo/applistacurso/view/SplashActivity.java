@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import devandroid.paulo.applistacurso.R;
+import devandroid.paulo.applistacurso.database.ListaVipDB;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,6 +17,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        ListaVipDB db = new ListaVipDB(SplashActivity.this);
 
         cumutarTelaSplash();
 

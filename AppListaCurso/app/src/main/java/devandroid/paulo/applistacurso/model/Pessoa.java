@@ -2,13 +2,30 @@ package devandroid.paulo.applistacurso.model;
 
 public class Pessoa {
 
+    private int id;
     private String primeiroNome;
-    private String SobreNome;
+    private String sobreNome;
     private String cursoDesejado;
     private String telefoneContato;
 
     public Pessoa(){
 
+    }
+
+    public String toString(){
+        return "Pessoa{" +
+                "primeiroNome='"+ primeiroNome + '\'' +
+                "sobreNome='"+ sobreNome + '\'' +
+                "cursoDesejado='"+ cursoDesejado + '\'' +
+                "telefoneContato='"+ telefoneContato + '\'' ;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPrimeiroNome() {
@@ -20,11 +37,11 @@ public class Pessoa {
     }
 
     public String getSobreNome() {
-        return SobreNome;
+        return sobreNome;
     }
 
     public void setSobreNome(String sobreNome) {
-        SobreNome = sobreNome;
+        this.sobreNome = sobreNome;
     }
 
     public String getCursoDesejado() {
