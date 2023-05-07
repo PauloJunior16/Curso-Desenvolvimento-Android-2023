@@ -7,5 +7,4 @@
     <string name="pin_gps_do_mapa">Pin GPS do Mapa</string>
     <string name="image_pin_gps">image_pin_gps</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="api_key">AIzaSyCm5XhGkhUtYGlCPnGxWXodpj5ZogAuesI</string>
 </resources>
