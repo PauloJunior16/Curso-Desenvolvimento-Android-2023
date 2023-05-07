@@ -1,22 +1,34 @@
 package devandroid.paulo.appcoordenadasgps;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    GoogleMap mMap;
     String[] permissoesRequiridas = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -36,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         txtValorLatitude = findViewById(R.id.txtValorLatitude);
         txtValorLongitude = findViewById(R.id.txtValorLongitude);
+
+        SupportMapFragment mapfragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapfragment.getMapAsync(this);
 
         locationManager = (LocationManager) getApplication().getSystemService(Context.LOCATION_SERVICE);
 
@@ -67,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean solicitarPermissaoParaObterLocalizacao() {
 
-        Toast.makeText(this, "Aplicação não tem permissão de localização...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Carregando...", Toast.LENGTH_LONG).show();
 
         List<String> permissoesNegadas = new ArrayList<>();
 
@@ -91,12 +107,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void capturarUltimaLocalizacaoValida() {
 
-        latitude = 1.98;
-        longitude = -1.67;
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        txtValorLatitude.setText(String.valueOf(latitude));
-        txtValorLongitude.setText(String.valueOf(longitude));
+        if(location != null) {
+
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }else{
+            latitude = 0.00;
+            longitude = 0.00;
+        }
+
+        txtValorLatitude.setText(String.format("%.6f",latitude));
+        txtValorLongitude.setText(String.format("%.6f",longitude));
+
+        Toast.makeText(this, "Coordenadas obtidas com sucesso", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        LatLng localizacaoCelular = new LatLng(latitude, longitude);
+
+        mMap.addMarker(new MarkerOptions().position(localizacaoCelular).title("Localização atual"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(localizacaoCelular));
+
     }
 }
